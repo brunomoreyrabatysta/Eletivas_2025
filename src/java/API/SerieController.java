@@ -4,11 +4,14 @@ import Entity.Serie;
 import Service.SerieService;
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -24,7 +27,7 @@ public class SerieController extends HttpServlet {
         return new JSONObject(buffer.toString());
     }
     
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+    
     /**
      * Handles the HTTP <code>GET</code> method.
      *
@@ -39,13 +42,24 @@ public class SerieController extends HttpServlet {
         JSONObject retorno = new JSONObject();
         
         try
-        {            
-            retorno.put("Dados", "");
-            retorno.put("Mensagem", "Lista");
+        {
+            SerieService service = new SerieService();
+            List<Serie> lista = service.Listar();
+            JSONArray arr = new JSONArray();
+            for(Serie s: lista) {
+                JSONObject o = new JSONObject();
+                o.put("SerieId", s.getSerie_id());
+                o.put("Descricao", s.getDescricao());
+                o.put("Situacao", s.getSituacao());
+                o.put("Turno", s.getTurno());
+                arr.put(o);
+            }                        
+            retorno.put("Dados", arr);
+            retorno.put("Mensagem", "Sucesso.");
             response.getWriter().print(retorno.toString());   
         } catch(Exception ex) {
             retorno.put("Dados", "");
-            retorno.put("Mensagem", "Problema");
+            retorno.put("Mensagem", "Problema - " + ex.getMessage());
             response.setStatus(500);
             response.getWriter().print(retorno.toString());
         }        
@@ -96,18 +110,22 @@ public class SerieController extends HttpServlet {
     protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("application/json;charset=UTF-8");
         SerieService serieService = new SerieService();
+        JSONObject retorno = new JSONObject();
         
         try {
             int serieId = Integer.parseInt(request.getParameter("serieId"));            
         
-            //serieService.Excluir(serieId);
+            serieService.Excluir(serieId);
         
             //Returning tasks
-            
-            //response.getWriter().print(file.toString());
+            retorno.put("Dados", "Série excluída com sucesso.");
+            retorno.put("Mensagem", "Sucesso.");
+            response.getWriter().print(retorno.toString());   
         }catch(NumberFormatException ex){
-            response.setStatus(500);            
-            //response.getWriter().print(file.toString());
+            retorno.put("Dados", "");
+            retorno.put("Mensagem", "Problema - " + ex.getMessage());
+            response.setStatus(500);
+            response.getWriter().print(retorno.toString());
         }
     }
 

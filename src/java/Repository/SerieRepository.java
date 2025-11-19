@@ -52,6 +52,7 @@ public class SerieRepository {
         
         String sql = "SELECT *";
         sql = sql + "  FROM Serie";
+        sql = sql + " ORDER BY Descricao";
         
         try
         {
@@ -60,12 +61,8 @@ public class SerieRepository {
             List<Serie> lista = new ArrayList<>();
             
             while (resultSet.next()) {
-                int id = resultSet.getInt("id");
-                String name = resultSet.getString("name");
-                System.out.println("ID: " + id + ", Name: " + name);
-                
                 Serie serie = new Serie();
-                serie.setSerie_id(resultSet.getInt("SerieId"));
+                serie.setSerie_id(resultSet.getInt("Serie_Id"));
                 serie.setDescricao(resultSet.getString("Descricao"));
                 serie.setTurno(resultSet.getString("Turno"));
                 serie.setSituacao(resultSet.getString("Situacao"));
@@ -85,7 +82,7 @@ public class SerieRepository {
         
         String sql = "SELECT *";
         sql = sql + "  FROM Serie";
-        sql = sql + " WHERE SerieId = " + Integer.toString(serieId);
+        sql = sql + " WHERE Serie_Id = " + Integer.toString(serieId);
         
         try
         {
@@ -94,7 +91,7 @@ public class SerieRepository {
             Serie serie = new Serie();
             
             while (resultSet.next()) {                                
-                serie.setSerie_id(resultSet.getInt("SerieId"));
+                serie.setSerie_id(resultSet.getInt("Serie_Id"));
                 serie.setDescricao(resultSet.getString("Descricao"));
                 serie.setTurno(resultSet.getString("Turno"));
                 serie.setSituacao(resultSet.getString("Situacao"));                                
@@ -111,7 +108,7 @@ public class SerieRepository {
         AcessoDB banco = new AcessoDB();
         
         String sql = "DELETE FROM Serie ";
-        sql = sql + " WHERE SerieId = " + Integer.toString(serieId);
+        sql = sql + " WHERE Serie_Id = " + Integer.toString(serieId);
         
         try
         {

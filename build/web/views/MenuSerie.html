@@ -4,8 +4,22 @@
         <title>TODO supply a title</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script type="text/javascript" src="../js/arquivo.js"></script>
+        <script type="text/javascript" src="../js/serie.js"></script>
     </head>
-    <body>
+    <body onload="CarregarListaSerie()">
         <h1>Série</h1>
+        <button id="btnNovaSerie" onclick="NovaSerie();">Nova Série</button>
+        <table id="tab-regionalizacao" class="table table-striped table-hover" style="width:100%">
+            <thead>
+                <tr>
+                    <th style="width: 25%;">Código</th>
+                    <th style="width: 25%;">Descrição</th>
+                    <th style="width: 25%;">Situação</th>
+                    <th style="width: 25%;">Turno</th>                    
+                </tr>
+            </thead>
+            <tbody class="carregamentoTabela" id="carregamentoTabela" name="carregamentoTabela"> </tbody>
+        </table>           
     </body>
 </html>
